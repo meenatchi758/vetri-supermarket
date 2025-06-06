@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Home/Vetri Market - Billing</title>
+    <link rel="icon" href="./images/ima.jpeg" type="image/jpeg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/vetrimarket.css" />
+</head>
+<body>
+
+  <div class="container">
+
+  <aside id="sidebar" class="sidebar">
+
+      <div class="logo-section">
+        <a href="vetrimarket.html"><img src="./images/ima.jpeg" class="logo" /></a>
+        <h2>Vetri Market</h2>
+      </div>
+      <nav class="nav-links">
+ 
+
+        <div class="nav-item">
+          <a href="vetrimarket.html"><img src="./images/Home.png" class="nav-icon" /> Home</a>
+        </div>
+        <div class="nav-item active">
+           <a href="vetriproducts.html"><img src="./images/Products.png" class="nav-icon" /> Products</a>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <h2 class="section-title">Customer Details</h2><br />
+      <div class="customer-grid">
+        <p>
+          <span>CUSTOMER NAME:</span><br />
+          <input id="customerName" class="input-box" type="text" />
+        </p>
+        <p>
+          <span>CONTACT NO :</span><br />
+          <input id="contactNo" class="input-box" type="text" />
+        </p>
+        <img src="./images/edit.png" class="edit-icon" />
+      </div>
+
+      <div class="customer1-grid">
+        <p>
+          <span>ADDRESS :</span><br />
+          <input id="address" class="input-box" type="text" />
+        </p>
+        <p>
+          <span>DATE :</span><br />
+          <input id="date" class="input-box" />
+        </p>
+        <img src="./images/delete.png" class="edit1-icon" />
+      </div><br />
+
+      <div class="search-add-container">
+        <div class="search-box">
+          <i class="fas fa-search search-icon"></i>
+<input type="text" id="searchInput" placeholder="Search" oninput="searchItems()" />
+
+          <div class="icon-group">
+            <i class="fas fa-barcode"></i>
+            <i class="fas fa-microphone" style="color: #3b82f6"></i>
+          </div>
+        </div>
+     <button class="add-btn" onclick="window.location.href='vetriproducts.html'">
+  <i class="fas fa-plus"></i> <p>Add Item</p>
+</button>
+
+      </div><br /><br />
+
+      <table>
+        <thead>
+          <tr>
+            <th>ITEM DETAILS</th>
+            <th>QUANTITY</th>
+            <th>RATE</th>
+            <th>TAX</th>
+            <th>AMOUNT</th>
+          </tr>
+        </thead>
+      </table>
+
+      <div id="item-list"></div>
+
+      <div class="footer">
+        <a href="pay2.html"><button class="next-btn" onclick="storeAndNext()">Next</a></button>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleInputs(inputs) {
+      inputs.forEach((input) => {
+        input.readOnly = !input.readOnly;
+        input.style.backgroundColor = input.readOnly ? "white" : "#f0f8ff";
+      });
+    }
+
+    document.querySelector(".edit-icon").addEventListener("click", () => {
+      toggleInputs([
+        document.getElementById("customerName"),
+        document.getElementById("contactNo"),
+      ]);
+    });
+
+document.querySelector(".edit1-icon").addEventListener("click", () => {
+  const confirmDelete = confirm("Are you sure you want to clear all customer details?");
+  if (confirmDelete) {
+    document.getElementById("customerName").value = "";
+    document.getElementById("contactNo").value = "";
+    document.getElementById("address").value = "";
+    document.getElementById("date").value = "";
+    // Optionally clear customerData from localStorage
+    localStorage.removeItem("customerData");
+  }
+});
+
+
+    function renderItems() {
+      const itemList = document.getElementById("item-list");
+      const items = JSON.parse(localStorage.getItem("cartItems")) || [];
+      itemList.innerHTML = "";
+
+      if (items.length === 0) {
+        itemList.innerHTML = "<p style='text-align:center; margin: 20px;'>No items in cart</p>";
+        return;
+      }
+
+      items.forEach((item, index) => {
+        const itemDiv = document.createElement("div");
+        itemDiv.classList.add("item-row");
+
+        itemDiv.innerHTML = `
+          <div class="item-name">${item.name}</div>
+          <div class="details">
+            <div class="quantity-controls">
+              <button class="minus-btn">-</button>
+              <span class="quantity">${item.quantity}</span>
+              <button class="plus-btn">+</button>
+            </div>
+            <span class="rate">${item.rate}</span>
+            <span class="tax">${item.tax.toFixed(2)}</span>
+            <span class="amount">${item.amount.toFixed(2)}</span>
+          </div>
+        `;
+
+        itemList.appendChild(itemDiv);
+
+        const plusBtn = itemDiv.querySelector(".plus-btn");
+        const minusBtn = itemDiv.querySelector(".minus-btn");
+        const quantitySpan = itemDiv.querySelector(".quantity");
+        const taxSpan = itemDiv.querySelector(".tax");
+        const amountSpan = itemDiv.querySelector(".amount");
+
+        plusBtn.addEventListener("click", () => {
+          item.quantity++;
+          item.tax = item.rate * item.quantity * 0.1;
+          item.amount = item.rate * item.quantity + item.tax;
+          quantitySpan.textContent = item.quantity;
+          taxSpan.textContent = item.tax.toFixed(2);
+          amountSpan.textContent = item.amount.toFixed(2);
+
+          items[index] = item;
+          localStorage.setItem("cartItems", JSON.stringify(items));
+        });
+
+        minusBtn.addEventListener("click", () => {
+          item.quantity--;
+          if (item.quantity <= 0) {
+            items.splice(index, 1);
+          } else {
+            item.tax = item.rate * item.quantity * 0.1;
+            item.amount = item.rate * item.quantity + item.tax;
+            items[index] = item;
+          }
+          localStorage.setItem("cartItems", JSON.stringify(items));
+          renderItems();
+        });
+      });
+    
+
+      const newItem = { name, quantity, rate, tax, amount };
+      const cart = JSON.parse(localStorage.getItem("cartItems")) || [];
+      cart.push(newItem);
+      localStorage.setItem("cartItems", JSON.stringify(cart));
+      renderItems();
+    }
+
+    function storeAndNext() {
+      const name = document.getElementById("customerName").value;
+      const contact = document.getElementById("contactNo").value;
+      const address = document.getElementById("address").value;
+      const date = document.getElementById("date").value;
+
+      const items = JSON.parse(localStorage.getItem("cartItems")) || [];
+      const subTotal = items.reduce((sum, item) => sum + item.rate * item.quantity, 0);
+      const taxTotal = items.reduce((sum, item) => sum + item.tax, 0);
+      const total = subTotal + taxTotal;
+
+      const customerData = { name, contact, address, date, items, subTotal, taxTotal, total };
+      localStorage.setItem("customerData", JSON.stringify(customerData));
+      window.location.href = "invoice.html";
+    }
+
+    function deleteAll() {
+      const confirmed = confirm("Are you sure you want to delete all customer?");
+      if (confirmed) {
+        localStorage.removeItem("customerData");
+      
+        renderItems();
+        document.getElementById("customerName").value = "";
+        document.getElementById("contactNo").value = "";
+        document.getElementById("address").value = "";
+        document.getElementById("date").value = "";
+        alert("All data deleted successfully.");
+      }
+    }
+
+    renderItems();
+    function searchItems() {
+  const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+  const allItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+  const filteredItems = allItems.filter(item =>
+    item.name.toLowerCase().includes(searchTerm)
+  );
+
+  renderFilteredItems(filteredItems);
+}
+
+function renderFilteredItems(items) {
+  const itemList = document.getElementById("item-list");
+  itemList.innerHTML = "";
+
+  if (items.length === 0) {
+    itemList.innerHTML = "<p style='text-align:center; margin: 20px;'>No matching items</p>";
+    return;
+  }
+
+  items.forEach((item, index) => {
+    const itemDiv = document.createElement("div");
+    itemDiv.classList.add("item-row");
+
+    itemDiv.innerHTML = `
+      <div class="item-name">${item.name}</div>
+      <div class="details">
+        <div class="quantity-controls">
+          <button class="minus-btn">-</button>
+          <span class="quantity">${item.quantity}</span>
+          <button class="plus-btn">+</button>
+        </div>
+        <span class="rate">${item.rate}</span>
+        <span class="tax">${item.tax.toFixed(2)}</span>
+        <span class="amount">${item.amount.toFixed(2)}</span>
+      </div>
+    `;
+
+    itemList.appendChild(itemDiv);
+  });
+}
+
+  </script>
+
+
+
+</body>
+</html>

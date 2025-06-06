@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vetri Market - Invoice</title>
+      <link rel="icon" href="./images/ima.jpeg" type="image/jpeg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+  <style>
+    html, body {
+      font-family: 'Outfit', sans-serif;
+      margin: 0;
+      padding: 0;
+      height: auto !important;
+      overflow: visible !important;
+      background: #fff;
+    }
+
+    #invoice-content {
+      margin: 40px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .invoice-number {
+      float: right;
+      border: 1px solid #000;
+      padding: 8px;
+      width: 270px;
+      height: 30px;
+      margin-top: -60px;
+    }
+
+    .section {
+      margin-bottom: 30px;
+      margin-left: 80px;
+    }
+
+    .section strong {
+      font-size: 27px;
+    }
+
+    .highlight {
+      color: #f58742;
+      font-weight: bold;
+      font-size: 25px;
+    }
+
+    .section p {
+      font-size: 25px;
+      line-height: 1.7;
+    }
+
+    .divider {
+      border-top: 2px solid limegreen;
+      margin: 20px 0;
+    }
+
+    .row {
+      display: flex;
+      margin-left: 80px;
+      gap: 260px;
+    }
+
+    .row p {
+      font-size: 23px;
+    }
+
+    .bold {
+      font-weight: bold;
+    }
+
+    .address p {
+      font-size: 24px;
+      color: black;
+    }
+
+    table {
+      width: 90%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      margin-left: 20px;
+    }
+
+    th, td {
+      border: 1px solid limegreen;
+      padding: 20px;
+      text-align: center;
+    }
+
+    th {
+      font-size: 27px;
+      font-weight: 600;
+    }
+
+    td {
+      font-size: 20px;
+    }
+
+    .total-row {
+      text-align: right;
+      font-weight: bold;
+      font-size: 25px;
+      margin-right: 100px;
+    }
+
+    .download-btn {
+      background-color: #f58742;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: block;
+      margin: 30px auto;
+      font-weight: bold;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div id="invoice-content">
+    <h1>Tax Invoice</h1>
+
+    <div class="section">
+      <p><strong>Sold By:</strong> <span class="highlight">Vetri Market</span></p>
+      <p><strong>Ship–From Address:</strong><br>
+        Vetri market<br>
+        65, Old Market, Sivagurunathapuram, Surandai,<br>
+        Tamil Nadu 627-859
+      </p>
+      <div class="invoice-number">Invoice Number # HY6789537890</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <div>
+        <p><strong>Order ID:</strong> <span id="order-id">---</span></p>
+        <p><strong>Order Date:</strong> <span id="order-date">--</span></p>
+      </div>
+
+      <div class="address">
+        <p><strong>Billing Address</strong></p>
+        <p><span id="custName">---</span></p>
+        <p><span id="custAddress">---</span></p>
+        <p>Phone - <span id="custContact">---</span></p>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Quantity</th>
+          <th>Rate</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody id="item-rows"></tbody>
+    </table>
+
+    <div class="total-row" id="total-amount">Total: ₹0.00</div>
+  </div>
+
+ <button class="download-btn" onclick="downloadPDF()">Download Invoice</button>
+
+  <script>
+    // Generate or retrieve Order ID
+    const orderId = localStorage.getItem("orderId") || Math.floor(Math.random() * 100000000);
+    localStorage.setItem("orderId", orderId);
+    document.getElementById("order-id").innerText = orderId;
+
+    // Set Order Date
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString("en-GB").replace(/\//g, "-");
+    document.getElementById("order-date").innerText = formattedDate;
+
+    // Fetch Customer Data
+    const customerData = JSON.parse(localStorage.getItem("customerData")) || {};
+
+    document.getElementById("custName").innerText = customerData.name || "N/A";
+    document.getElementById("custContact").innerText = customerData.contact || "N/A";
+    document.getElementById("custAddress").innerText = customerData.address || "N/A";
+
+    // Populate Items
+    const tbody = document.getElementById("item-rows");
+    if (customerData.items && customerData.items.length > 0) {
+      customerData.items.forEach(item => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${item.name}</td>
+          <td>${item.quantity}</td>
+          <td>₹${item.rate.toFixed(2)}</td>
+          <td>₹${item.amount.toFixed(2)}</td>
+        `;
+        tbody.appendChild(row);
+      });
+
+      document.getElementById("total-amount").innerText = `Total: ₹${customerData.total.toFixed(2)}`;
+    } else {
+      const row = document.createElement("tr");
+      row.innerHTML = `<td colspan="4">No items found</td>`;
+      tbody.appendChild(row);
+    }
+  </script>
+
+  <script>
+function downloadPDF() {
+  window.scrollTo(0, 0); // ensure full view
+
+  const element = document.getElementById("invoice-content");
+  const opt = {
+    margin:       0.5,
+    filename:     'VetriMarket_Invoice.pdf',
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 4, scrollY: 0 },
+    jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+  };
+
+  setTimeout(() => {
+    html2pdf().set(opt).from(element).save().then(() => {
+      // Redirect after download
+      window.location.href = "thankyou.html";
+    });
+  }, 300);
+}
+  </script>
+</body>
+</html>

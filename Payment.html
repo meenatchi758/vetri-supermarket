@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Payment/Vetri Market - Payment</title>
+      <link rel="icon" href="./images/ima.jpeg" type="image/jpeg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo-section">
+    <a href="vetrimarket.html"><img src="./images/ima.jpeg" class="logo" /></a>
+        <h2>Vetri Market</h2>
+      </div>
+      <nav class="nav-links">
+        <div class="nav-item">
+          <a href="vetrimarket.html"><img src="./images/Home.png" class="nav-icon" /> Home</a>
+        </div>
+        <div class="nav-item active">
+           <a href="vetriproducts.html"><img src="./images/Products.png" class="nav-icon" /> Products</a>
+        </div>
+      </nav>
+    </aside>
+
+    <div class="container1">
+      <!-- Header -->
+      <div class="header">
+        <div>
+          <div><strong>DATE:</strong> <span id="showDate"></span></div><br>
+          <div><strong>TIME:</strong> <span id="showTime"></span></div><br>
+          <div><strong>BILL NO:</strong> <span id="billNo"></span></div>
+        </div>
+        <div class="badge">
+          <img src="./images/draft.png">Draft
+        </div>
+      </div>
+
+      <!-- Collected / Balance -->
+      <div class="amounts">
+        <div class="amount-box collected">
+          Collected Amount<br>
+          <input type="text" id="collectedAmount" value="0.00" />
+        </div>
+
+        <div class="amount-box balance">
+          Balance<br>
+          <span id="balanceAmount">0.00</span>
+        </div>
+      </div>
+
+      <!-- Payment Method: CASH -->
+      <div class="payment-method">
+        <div class="icon">
+          <img src="./images/cash.png">
+        </div>
+        <div class="method-btn selected">CASH <span style="color:orange; font-weight: bold; margin-left: 5px;">✔</span></div>
+        <div class="received-wrapper">
+          <label class="received-label">Received Amount</label>
+          <input type="text" class="received-input" id="receivedAmount" value="0.0" />
+        </div>
+      </div>
+
+      <!-- Payment Method: CARD -->
+      <div class="payment-method">
+        <div class="icon">
+          <img src="./images/card.png">
+        </div>
+        <div class="method-btn">CARD</div>
+      </div>
+      <hr>
+
+      <!-- Summary -->
+      <div class="summary">
+        <div class="summary-row">
+          <span>Sub Total</span>
+          <span id="subTotal">0.00</span>
+        </div><br>
+        <div class="summary-row">
+          <span>Tax</span>
+          <span id="tax">0.00</span>
+        </div><br>
+        <div class="summary-row">
+          <span>Round Off</span>
+          <span id="roundOff">0.00</span>
+        </div><br>
+        <hr>
+        <div class="summary-row total">
+          <span>Total</span>
+          <span id="total">0.00</span>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="buttons">
+        <button class="btn save">Save</button>
+<button class="btn pay" onclick="handlePayment()">Payment</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script>
+    // Get data from localStorage (if any)
+    const storedData = JSON.parse(localStorage.getItem("customerData")) || {
+      subTotal: 0,
+      taxTotal: 0,
+      roundOff: 0,
+      total: 0
+    };
+
+    const subTotal = Math.round(storedData.subTotal || 0);
+    const tax = Math.round(storedData.taxTotal || 0);
+    const roundOff = Math.round(storedData.roundOff || 0);
+    const total = Math.round(storedData.total || 0);
+
+    // Set summary
+    document.getElementById("subTotal").innerText = subTotal.toFixed(2);
+    document.getElementById("tax").innerText = tax.toFixed(2);
+    document.getElementById("roundOff").innerText = roundOff.toFixed(2);
+    document.getElementById("total").innerText = total.toFixed(2);
+
+    // Set default input values
+    const receivedInput = document.getElementById("collectedAmount");
+    receivedInput.value = total.toFixed(2);
+
+    const collectedInput = document.getElementById("receivedAmount");
+    collectedInput.value = "0.00";
+
+    // Update balance on input
+    collectedInput.addEventListener("input", function () {
+      const collected = parseFloat(this.value) || 0;
+      const balance = collected - total;
+      document.getElementById("balanceAmount").innerText = balance.toFixed(2);
+    });
+
+    // Format current date (DD/MM/YYYY)
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString("en-GB"); // UK format
+    document.getElementById("showDate").textContent = formattedDate;
+
+    // Format current time in 12-hour format
+    function formatTime(date) {
+      let hours = date.getHours();
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12 || 12;
+      return `${hours}:${minutes} ${ampm}`;
+    }
+    document.getElementById("showTime").textContent = formatTime(today);
+
+    // Generate random 5-digit bill number
+    const randomBillNo = Math.floor(10000 + Math.random() * 90000);
+    document.getElementById("billNo").textContent = randomBillNo;
+  </script>
+<script>
+  function handlePayment() {
+    // Clear cart and optional customer data
+    localStorage.removeItem("cartItems");
+    // localStorage.removeItem("customerData"); // Uncomment if needed
+
+    // Redirect to success.html
+    window.location.href = "success.html";
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vetri Market Payment</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: #fff;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .payment-container {
+      max-width: 400px;
+      margin: auto;
+      padding: 20px;
+      border-left: 1px solid #ddd;
+      border-right: 1px solid #ddd;
+    }
+
+    .top-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      font-size: 14px;
+    }
+
+    .top-info div {
+      margin-bottom: 5px;
+    }
+
+    .btn-draft {
+      background-color: #007bff;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .amount-boxes {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px 0;
+    }
+
+    .highlight-box {
+      flex: 1;
+      text-align: center;
+      border-radius: 6px;
+      padding: 10px;
+      font-weight: 600;
+      color: #fff;
+      margin: 0 5px;
+    }
+
+    .collected {
+      background-color: #ff914d;
+    }
+
+    .balance {
+      background-color: #da92f5;
+    }
+
+    .payment-method {
+      display: flex;
+      align-items: center;
+      margin: 10px 0;
+    }
+
+    .payment-method i {
+      font-size: 20px;
+      margin-right: 8px;
+      color: #ffdd00;
+    }
+
+    .method-button {
+      flex: 1;
+      padding: 8px;
+      border: 1.5px solid #007bff;
+      border-radius: 6px;
+      background-color: white;
+      color: #333;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .method-button.selected {
+      background-color: #f1faff;
+      border: 2px solid #007bff;
+      color: #007bff;
+    }
+
+    .received-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 15px 0;
+    }
+
+    .received-section input {
+      flex: 1;
+      padding: 8px;
+      font-size: 16px;
+      border: 1.5px solid #007bff;
+      border-radius: 6px;
+      margin-left: 10px;
+    }
+
+    .summary {
+      border-top: 1px solid #ccc;
+      margin-top: 15px;
+      padding-top: 10px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 8px 0;
+      font-size: 16px;
+    }
+
+    .summary-row strong {
+      font-size: 18px;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 25px;
+    }
+
+    .btn {
+      flex: 1;
+      margin: 0 5px;
+      padding: 12px;
+      font-weight: 600;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn-save {
+      background-color: #ff914d;
+      color: white;
+    }
+
+    .btn-pay {
+      background-color: #007bff;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<div class="payment-container">
+  <div class="top-info">
+    <div>
+      <div>DATE: 12/7/2024</div>
+      <div>TIME: 5.30 PM</div>
+      <div>BILL NO: <strong>78123</strong></div>
+    </div>
+    <button class="btn-draft"><i class="fa fa-file"></i> Draft</button>
+  </div>
+
+  <div class="amount-boxes">
+    <div class="highlight-box collected">
+      Collected Amount<br>
+      <span id="collectedAmount">130</span>
+    </div>
+    <div class="highlight-box balance">
+      Balance<br>
+      <span id="balanceAmount">0.00</span>
+    </div>
+  </div>
+
+  <div class="payment-method">
+    <i class="fa fa-wallet"></i>
+    <div class="method-button selected">CASH</div>
+  </div>
+  <div class="payment-method">
+    <i class="fa fa-wallet"></i>
+    <div class="method-button">CARD</div>
+  </div>
+
+  <div class="received-section">
+    <label for="receivedAmount">Received Amount</label>
+    <input type="number" id="receivedAmount" value="150.0">
+  </div>
+
+  <div class="summary">
+    <div class="summary-row"><span>Sub Total</span><span>130</span></div>
+    <div class="summary-row"><span>Tax</span><span>30</span></div>
+    <div class="summary-row"><span>Round Off</span><span>00</span></div>
+    <hr>
+    <div class="summary-row"><strong>Total</strong><strong>160</strong></div>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn btn-save">Save</button>
+    <button class="btn btn-pay">Payment</button>
+  </div>
+</div>
+
+</body>
+</html>

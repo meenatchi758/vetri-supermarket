@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Products/Vetri Products</title>
+      <link rel="icon" href="./images/ima.jpeg" type="image/jpeg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/product.css">
+</head>
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="logo-section">
+    <a href="vetrimarket.html"><img src="./images/ima.jpeg" class="logo" /></a>
+        <h2>Vetri Market</h2>
+      </div>
+         <nav class="nav-links">
+        <div class="nav-item">
+          <a href="vetrimarket.html"><img src="./images/Home.png" class="nav-icon" /> Home</a>
+        </div>
+        <div class="nav-item active">
+           <a href="vetriproducts.html"><img src="./images/Products.png" class="nav-icon" /> Products</a>
+        </div>
+      </nav>
+    </aside>
+
+    <div class="main">
+      <h2>Products</h2><br>
+      <table>
+        <thead>
+          <tr>
+            <th>ITEM DETAILS</th>
+            <th>QUANTITY</th>
+            <th>RATE</th>
+            <th>TAX</th>
+            <th>AMOUNT</th>
+          </tr>
+        </thead>
+      </table><br><br>
+
+      <!-- Product Items -->
+      <div class="item-container">
+        <div class="item-name">Dairy Milk</div>
+        <div class="quantity-controls"><button>-</button><span>2</span><button>+</button></div>
+        <div class="value">100</div>
+        <div class="value">20</div>
+        <div class="value">120</div>
+        <div class="cart-icon"><img src="./images/Add to cart.png" class="ion"></div>
+      </div>
+
+      <div class="item-container">
+        <div class="item-name">Millet Noodles</div>
+        <div class="quantity-controls"><button>-</button><span>1kg</span><button>+</button></div>
+        <div class="value">30</div>
+        <div class="value">10</div>
+        <div class="value">40</div>
+        <div class="cart-icon"><img src="./images/Add to cart.png" class="ion"></div>
+      </div>
+
+      <div class="item-container">
+        <div class="item-name">Wheat Flour</div>
+        <div class="quantity-controls"><button>-</button><span>2kg</span><button>+</button></div>
+        <div class="value">100</div>
+        <div class="value">20</div>
+        <div class="value">120</div>
+        <div class="cart-icon"><img src="./images/Add to cart.png" class="ion"></div>
+      </div>
+
+      <div class="item-container">
+        <div class="item-name">Maida</div>
+        <div class="quantity-controls"><button>-</button><span>1kg</span><button>+</button></div>
+        <div class="value">30</div>
+        <div class="value">10</div>
+        <div class="value">40</div>
+        <div class="cart-icon"><img src="./images/Add to cart.png" class="ion"></div>
+      </div>
+
+      <div class="item-container">
+        <div class="item-name">Chili Powder</div>
+        <div class="quantity-controls"><button>-</button><span>2</span><button>+</button></div>
+        <div class="value">100</div>
+        <div class="value">20</div>
+        <div class="value">120</div>
+        <div class="cart-icon"><img src="./images/Add to cart.png" class="ion"></div>
+      </div>
+           <div class="item-container">
+        <div class="item-name">Biryani Masala</div>
+        <div class="quantity-controls"><button>-</button><span>1</span><button>+</button></div>
+        <div class="value">30</div>
+        <div class="value">10</div>
+        <div class="value">40</div>
+        <div class="cart-icon"><img src="./images/Add to cart.png" class="ion"></div>
+      </div>
+
+      <div class="footer">
+        <button class="next-btn">Next</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Load existing cart from localStorage or start with empty array
+  const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+  document.querySelectorAll('.item-container').forEach(container => {
+    // Get elements for quantity controls and values
+    const quantitySpan = container.querySelector('.quantity-controls span');
+    const minusBtn = container.querySelector('.quantity-controls button:first-child');
+    const plusBtn = container.querySelector('.quantity-controls button:last-child');
+    const rateEl = container.querySelectorAll('.value')[0];
+    const taxEl = container.querySelectorAll('.value')[1];
+    const amountEl = container.querySelectorAll('.value')[2];
+
+    // Parse numbers from the DOM
+    let quantity = parseInt(quantitySpan.innerText) || 1;
+    const rate = parseFloat(rateEl.innerText);
+    const tax = parseFloat(taxEl.innerText);
+
+    // Function to update amount and quantity in UI
+    function updateAmount() {
+      // Calculate new amount = (rate + tax) * quantity
+      const newAmount = (rate + tax) * quantity;
+      amountEl.innerText = newAmount;
+      quantitySpan.innerText = quantity;
+    }
+
+    // Initial update in case quantity changed
+    updateAmount();
+
+    // Increase quantity event
+    plusBtn.addEventListener('click', () => {
+      quantity++;
+      updateAmount();
+    });
+
+    // Decrease quantity event
+    minusBtn.addEventListener('click', () => {
+      if (quantity > 0) {
+        quantity--;
+        updateAmount();
+      }
+    });
+
+    // Add to cart event
+    container.querySelector('.cart-icon').addEventListener('click', () => {
+      const name = container.querySelector('.item-name').innerText;
+      const amount = parseFloat(amountEl.innerText);
+
+      cartItems.push({
+        name,
+        quantity,
+        rate,
+        tax,
+        amount,
+      });
+
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      alert(`${name} added to cart`);
+    });
+  });
+
+  // Next button to go to billing page
+  document.querySelector('.next-btn').addEventListener('click', () => {
+    window.location.href = 'vetrimarket.html';
+  });
+</script>
+
+</body>
+</html>

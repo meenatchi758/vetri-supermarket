@@ -1,0 +1,255 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+   body {
+      font-family: 'Outfit', sans-serif;
+      margin: 0;
+   
+
+    }
+    .container {
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background-color: #dceeff;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.logo-section {
+  display: flex;
+  text-align: center;
+  margin-bottom: 30px;
+}
+.nav-item.active a {
+
+  color:  #F88E55;
+  border-radius: 5px;
+}
+.nav-item a{
+  text-decoration: none;
+  color:black;
+  margin-left: 40px;;
+}
+
+.logo {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+.nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.nav-item {
+  padding: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.nav-item img{
+  color:black;
+}
+.nav-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%);
+}
+
+/* Active (Orange color filter) */
+.nav-item.active .nav-icon {
+  filter: brightness(0) saturate(100%) invert(59%) sepia(98%) saturate(749%) hue-rotate(345deg) brightness(105%) contrast(102%);
+}
+
+.nav-item.active {
+
+  color:  #F88E55;
+  border-radius: 5px;
+}
+
+    .container1 {
+      max-width: 340px;
+      height:650px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      border: 2px solid gray;
+      box-shadow: 0 0 30px rgba(27, 26, 26, 0.08);
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+.header strong{
+    color:grey;
+}
+#collectedAmount {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 1.2em;
+  text-align: right;
+  width: 130px;
+  height:15px;
+}
+    .badge {
+      background-color: #007bff;
+      color: #fff;
+      padding: 5px 12px;
+      width:90px;
+      height:35px;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+  
+    .badge img{
+       margin-top:4px;
+    }
+
+    .amounts {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px 0;
+    }
+
+    .amount-box {
+      flex: 1;
+      text-align: center;
+      padding: 12px;
+      color:black;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+
+    .amount-box:last-child {
+      margin-right: 0;
+    }
+
+    .collected { background-color: #F88E55; }
+    .balance { background-color: #EC9FFF; }
+
+    .payment-method {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .icon {
+      background:yellow;
+      border-radius: 50%;
+      padding: 10px;
+      font-size: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .method-btn {
+      border: 1.5px solid #007bff;
+      padding: 10px 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      width:110px;
+      font-size: 14px;
+      flex-shrink: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .method-btn.selected {
+      border-color:#007bff;
+    }
+
+    .received-wrapper {
+  
+      position: relative;
+    }
+
+    .received-label {
+      font-size: 14px;
+      color: #333;
+      position: absolute;
+      top: -10px;
+      right: 10px;
+      background: #fff;
+      padding: 0 4px;
+    }
+
+    .received-input {
+      width: 99%;
+      padding: 10px 8px;
+      border: 1.5px solid #007bff;
+      border-radius: 6px;
+      text-align: right;
+      font-size: 14px;
+    }
+
+    .summary {
+    
+      margin-top: 10px;
+      padding-top: 10px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin: 6px 0;
+      font-size: 15px;
+    }
+
+    .summary-row.total {
+      font-size: 18px;
+      font-weight: 800;
+      margin-top: 10px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+  gap:50px;
+      width:290px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      margin: 0 5px;
+    }
+
+    .btn.save { background-color: #f97316; }
+    .btn.pay { background-color: #007bff; }
+
+   .buttons a{
+    text-decoration: none;
+    color:white;
+   }
+   @media only screen and (max-width: 480px){
+    .header{
+      margin-top: -200px;
+    }
+   }
